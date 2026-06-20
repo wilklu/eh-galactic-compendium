@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EHGC — Atlas</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-title">EHGC</div>
+          <div class="brand-subtitle">Atlas</div>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="status">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="systemStatus">SYSTEM ONLINE</span>
+        </div>
+        <div class="clock">
+          <span id="utcClock">--:--:-- UTC</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- Main work -->
+      <section class="panel">
+        <h2 class="panel-title">Atlas Operations</h2>
+        <div class="panel-body">
+          <!-- TODO: Atlas widgets/forms -->
+          <button class="btn primary" id="atlasGenerate">⚡ GENERATE SECTOR SURVEY</button>
+        </div>
+      </section>
+
+      <!-- Local console (fresh on load) -->
+      <section class="panel console-panel">
+        <h2 class="panel-title">Console</h2>
+
+        <div class="console-meta">
+          <div class="meta-item">
+            <div class="meta-label">Active Programs</div>
+            <div class="meta-value" id="activePrograms">0</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Output Queue</div>
+            <div class="meta-value" id="outputQueue">0</div>
+          </div>
+        </div>
+
+        <div class="console" id="atlasConsole">
+          <!-- Boot sequence lines injected by JS -->
+        </div>
+
+        <div class="console-actions">
+          <button class="btn primary" id="atlasClearConsole">Clear Console</button>
+          <button class="btn" id="atlasRunSelfTest">Run Self-Test</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="footer-text">Local Console • Atlas</span>
+    </footer>
+  </div>
+
+  <!-- Keep these modular; names are examples -->
+  <script src="js/app-ui.js"></script>
+  <script>
+    // Unique boot sequence for Atlas (local-only history)
+    const consoleEl = document.getElementById("atlasConsole");
+    consoleEl.innerHTML = "";
+
+    const bootLines = [
+      "[ATLAS] Initializing epistellar map stream…",
+      "[ATLAS] Calibrating orbital-zone resolver (Table 6)…",
+      "[ATLAS] Loading orbital contents resolver (Table 7)…",
+      "[ATLAS] Operator session ready."
+    ];
+
+    bootLines.forEach((line, i) => {
+      setTimeout(() => {
+        const div = document.createElement("div");
+        div.className = "console-line";
+        div.textContent = line;
+        consoleEl.appendChild(div);
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }, 250 + i * 350);
+    });
+
+    // Example: generate button triggers local console + later sends to dashboard
+    document.getElementById("atlasGenerate").addEventListener("click", () => {
+      const jobId = "atlas_" + Date.now().toString(36);
+
+      // TODO: local console enqueue/complete; for now log lines:
+      appendLocal(consoleEl, `[ATLAS] JOB_START ${jobId} sector_survey…`);
+
+      setTimeout(() => {
+        // TODO: replace with backend results
+        appendLocal(consoleEl, `[ATLAS] JOB_RESULT ${jobId} Sector systems=24 Worlds=3 Starports=2`);
+      }, 1200);
+    });
+
+    function appendLocal(el, text) {
+      const div = document.createElement("div");
+      div.className = "console-line";
+      div.textContent = text;
+      el.appendChild(div);
+      el.scrollTop = el.scrollHeight;
+    }
+  </script>
+</body>
+</html>

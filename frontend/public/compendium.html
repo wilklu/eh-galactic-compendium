@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EHGC — Galactic Compendium</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-title">EHGC</div>
+          <div class="brand-subtitle">Galactic Compendium</div>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="status">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="systemStatus">SYSTEM ONLINE</span>
+        </div>
+        <div class="clock">
+          <span id="utcClock">--:--:-- UTC</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- Main work -->
+      <section class="panel">
+        <h2 class="panel-title">Compendium Browser</h2>
+        <div class="panel-body">
+          <!-- TODO: search/filter + list of lore/entities -->
+          <label class="label">Query</label>
+          <input class="input" id="compendiumQuery" placeholder="e.g., sector name, species, system ID…" />
+
+          <div class="row" style="margin-top:10px;">
+            <button class="btn primary" id="compendiumSearch">SEARCH</button>
+            <button class="btn" id="compendiumGenerate">⚡ GENERATE NEW LORE ENTRY</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Local console -->
+      <section class="panel console-panel">
+        <h2 class="panel-title">Console</h2>
+
+        <div class="console-meta">
+          <div class="meta-item">
+            <div class="meta-label">Active Programs</div>
+            <div class="meta-value" id="activePrograms">0</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Output Queue</div>
+            <div class="meta-value" id="outputQueue">0</div>
+          </div>
+        </div>
+
+        <div class="console" id="compendiumConsole"></div>
+
+        <div class="console-actions">
+          <button class="btn primary" id="compendiumClearConsole">Clear Console</button>
+          <button class="btn" id="compendiumRunSelfTest">Run Self-Test</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="footer-text">Local Console • Compendium</span>
+    </footer>
+  </div>
+
+  <script src="js/app-ui.js"></script>
+  <script>
+    const consoleEl = document.getElementById("compendiumConsole");
+    consoleEl.innerHTML = "";
+
+    // Unique boot sequence for Compendium
+    const bootLines = [
+      "[COMPENDIUM] Boot: index shards warming…",
+      "[COMPENDIUM] Boot: lore taxonomy loaded (cosmic/planetary/biological/narrative)…",
+      "[COMPENDIUM] Boot: entity serializer armed.",
+      "[COMPENDIUM] Operator session ready."
+    ];
+
+    bootLines.forEach((line, i) => {
+      setTimeout(() => {
+        const div = document.createElement("div");
+        div.className = "console-line";
+        div.textContent = line;
+        consoleEl.appendChild(div);
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }, 250 + i * 350);
+    });
+
+    document.getElementById("compendiumSearch").addEventListener("click", () => {
+      const q = document.getElementById("compendiumQuery").value.trim() || "(empty)";
+      appendLocal(consoleEl, `[COMPENDIUM] SEARCH query="${q}"`);
+      // TODO: replace with backend
+      setTimeout(() => appendLocal(consoleEl, "[COMPENDIUM] SEARCH complete: 0 results (placeholder)."), 900);
+    });
+
+    document.getElementById("compendiumGenerate").addEventListener("click", () => {
+      const jobId = "comp_" + Date.now().toString(36);
+      appendLocal(consoleEl, `[COMPENDIUM] JOB_START ${jobId} generate_lore_entry…`);
+      setTimeout(() => {
+        appendLocal(consoleEl, `[COMPENDIUM] JOB_RESULT ${jobId} entry_type=history title="…"`);
+      }, 1100);
+    });
+
+    function appendLocal(el, text) {
+      const div = document.createElement("div");
+      div.className = "console-line";
+      div.textContent = text;
+      el.appendChild(div);
+      el.scrollTop = el.scrollHeight;
+    }
+  </script>
+</body>
+</html>

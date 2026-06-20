@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHGC — Settings</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-title">EHGC</div>
+            <div class="brand-subtitle">Settings</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="systemStatus">SYSTEM ONLINE</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:--:-- UTC</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="panel">
+          <h2 class="panel-title">Settings</h2>
+          <!-- Settings UI goes here -->
+          <p style="color: var(--muted); font-size: 13px; margin-top: 8px">
+            Configuration options, preferences, and system settings will render here.
+          </p>
+        </section>
+
+        <section class="panel console-panel">
+          <h2 class="panel-title">Console</h2>
+          <div class="console-meta">
+            <div class="meta-item">
+              <div class="meta-label">Active Programs</div>
+              <div class="meta-value" id="activePrograms">0</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Output Queue</div>
+              <div class="meta-value" id="outputQueue">0</div>
+            </div>
+          </div>
+
+          <div class="console" id="console">
+            <div class="console-line">[EHGC] Settings interface initialized.</div>
+          </div>
+
+          <div class="console-actions">
+            <button class="btn primary" id="clearConsole">Clear Console</button>
+            <button class="btn" id="runSelfTest">Run Self-Test</button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-text">Nexus Command Terminal • Settings</span>
+      </footer>
+    </div>
+
+    <script src="app-ui.js"></script>
+    <script>
+      // page-specific init can go here
+      // e.g., populate settings widgets, load last selection, etc.
+    </script>
+  </body>
+</html>

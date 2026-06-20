@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHGC — Nexus Command Terminal</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-title">EHGC</div>
+            <div class="brand-subtitle">Galactic Compendium</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="systemStatus">SYSTEM ONLINE</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:--:-- UTC</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Grid -->
+      <main class="grid">
+        <!-- Left: Quick Launch -->
+        <section class="panel">
+          <h2 class="panel-title">Navigation</h2>
+
+          <div class="launch-buttons" role="navigation" aria-label="App launcher">
+            <button class="tile" data-app="atlas">
+              <span class="tile-icon">🌌</span>
+              <span class="tile-title">Atlas</span>
+              <span class="tile-sub">Star maps & nav overlays</span>
+            </button>
+
+            <button class="tile" data-app="compendium">
+              <span class="tile-icon">📖</span>
+              <span class="tile-title">Galactic Compendium</span>
+              <span class="tile-sub">Lore & histories</span>
+            </button>
+
+            <button class="tile" data-app="generators">
+              <span class="tile-icon">⚙</span>
+              <span class="tile-title">Generators</span>
+              <span class="tile-sub">Run modules & create outputs</span>
+            </button>
+
+            <button class="tile" data-app="log">
+              <span class="tile-icon">📋</span>
+              <span class="tile-title">System Log</span>
+              <span class="tile-sub">Events, errors, audit trail</span>
+            </button>
+          </div>
+
+          <div class="panel-footer">
+            <div class="hint">Select a module to launch.</div>
+          </div>
+        </section>
+
+        <!-- Right: Live Console -->
+        <section class="panel console-panel">
+          <h2 class="panel-title">Console</h2>
+
+          <div class="console-meta">
+            <div class="meta-item">
+              <div class="meta-label">Active Programs</div>
+              <div class="meta-value" id="activePrograms">0</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Output Queue</div>
+              <div class="meta-value" id="outputQueue">0</div>
+            </div>
+          </div>
+
+          <div class="console">
+            <div class="console-line">[EHGC] System initialized. Waiting for operations...</div>
+          </div>
+
+          <div class="console-actions">
+            <button class="btn primary" id="clearConsole">Clear Console</button>
+            <button class="btn" id="runSelfTest">Run Self-Test</button>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span class="footer-text">Nexus Command Terminal • v0.1</span>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHGC — World View</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .world-shell {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(320px, 390px) minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      @media (max-width: 980px) {
+        .world-shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .world-panel {
+        border: 1px solid rgba(215, 184, 106, 0.24);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(10, 14, 22, 0.94), rgba(6, 10, 18, 0.9));
+        padding: 14px;
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.36);
+      }
+
+      .world-h {
+        margin: 0;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .world-copy {
+        margin-top: 6px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .world-grid {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .world-field,
+      .world-card {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        padding: 8px;
+        background: rgba(8, 12, 20, 0.74);
+      }
+
+      .world-field label {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .world-field input,
+      .world-field select {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        padding: 6px 8px;
+        background: #0b1326;
+        color: var(--gold2);
+        font-family: Rajdhani, sans-serif;
+        font-size: 15px;
+      }
+
+      .world-meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 620px) {
+        .world-meta {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .meta-tile {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        background: rgba(7, 11, 18, 0.76);
+        padding: 8px;
+      }
+
+      .meta-tile .label {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .meta-tile .value {
+        margin-top: 3px;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .world-stage {
+        margin-top: 10px;
+        position: relative;
+        min-height: 560px;
+        border: 1px solid rgba(215, 184, 106, 0.26);
+        border-radius: 14px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 16%),
+          radial-gradient(circle at 50% 50%, rgba(92, 163, 255, 0.13), transparent 30%),
+          radial-gradient(circle at 50% 50%, #1c2948 0%, #0b1222 55%, #050912 100%);
+      }
+
+      .globe {
+        position: absolute;
+        inset: 8% 14%;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 45% 38%, rgba(255, 255, 255, 0.45), transparent 12%),
+          radial-gradient(circle at 50% 40%, rgba(130, 196, 255, 0.18), transparent 26%),
+          radial-gradient(circle at 50% 50%, rgba(21, 40, 72, 0.96), rgba(14, 24, 47, 0.98) 48%, rgba(6, 10, 18, 1) 82%);
+        box-shadow:
+          inset 0 0 0 1px rgba(215, 184, 106, 0.14),
+          0 0 40px rgba(0, 0, 0, 0.35);
+        overflow: hidden;
+      }
+
+      .world-gridlines {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(215, 184, 106, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(215, 184, 106, 0.08) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mix-blend-mode: screen;
+        opacity: 0.38;
+      }
+
+      .world-terminator {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 70% 50%,
+          transparent 36%,
+          rgba(0, 0, 0, 0.35) 68%,
+          rgba(0, 0, 0, 0.65) 100%
+        );
+      }
+
+      .world-hexes {
+        position: absolute;
+        inset: 0;
+      }
+
+      .world-hex {
+        position: absolute;
+        width: 54px;
+        height: 46px;
+        clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        background: rgba(120, 180, 255, 0.18);
+        border: 1px solid rgba(190, 225, 255, 0.22);
+        box-shadow: 0 0 10px rgba(120, 180, 255, 0.12);
+        transform: translate(-50%, -50%);
+      }
+
+      .world-hex.core {
+        background: rgba(255, 244, 214, 0.5);
+        border-color: rgba(255, 244, 214, 0.7);
+        box-shadow: 0 0 14px rgba(255, 244, 214, 0.2);
+      }
+
+      .world-hex.terrain {
+        background: rgba(94, 196, 160, 0.24);
+        border-color: rgba(94, 196, 160, 0.35);
+      }
+
+      .world-hex.single {
+        background: rgba(255, 179, 120, 0.2);
+        border-color: rgba(255, 179, 120, 0.28);
+      }
+
+      .world-caption {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        background: rgba(7, 12, 20, 0.82);
+      }
+
+      .world-caption .small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .world-caption .large {
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .action-row {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .status-line {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-title">EHGC</div>
+            <div class="brand-subtitle">World View</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="systemStatus">SYSTEM ONLINE</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:-- UTC</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="world-shell">
+        <section class="world-panel">
+          <h2 class="world-h">World Controls</h2>
+          <p class="world-copy">
+            This is the next rung after System Orbit. The world is represented as an icosahedral terrain map, with
+            terrain hex and single hex overlays ready for later drill-down into 500m hex actions.
+          </p>
+
+          <div class="world-grid">
+            <div class="world-field">
+              <label for="worldGalaxySelect">Galaxy Record</label>
+              <select id="worldGalaxySelect"></select>
+            </div>
+
+            <div class="world-field">
+              <label for="worldScale">World Scale</label>
+              <select id="worldScale">
+                <option value="world">World View</option>
+                <option value="terrain">Terrain Hex</option>
+                <option value="local">Local Hex</option>
+                <option value="single">Single Hex</option>
+              </select>
+            </div>
+
+            <div class="world-field">
+              <label for="worldMarker">World Marker</label>
+              <input id="worldMarker" type="text" value="Landing Site" />
+            </div>
+          </div>
+
+          <div class="world-meta">
+            <div class="meta-tile">
+              <div class="label">Galaxy</div>
+              <div class="value" id="worldHudName">No galaxy selected</div>
+            </div>
+            <div class="meta-tile">
+              <div class="label">Scale</div>
+              <div class="value" id="worldHudScale">World View</div>
+            </div>
+            <div class="meta-tile">
+              <div class="label">Hex</div>
+              <div class="value" id="worldHudHex">500m</div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn primary" id="worldRefresh">Refresh Galaxies</button>
+            <button class="btn" id="worldOpenTerrain">Open Terrain View</button>
+            <button class="btn" id="worldBackToOrbit">Back to Orbit</button>
+          </div>
+
+          <div class="status-line" id="worldStatus">Ready.</div>
+        </section>
+
+        <section class="world-panel">
+          <h2 class="world-h">World Display</h2>
+          <div class="world-stage" id="worldStage">
+            <div class="globe">
+              <div class="world-gridlines"></div>
+              <div class="world-hexes" id="worldHexes"></div>
+              <div class="world-terminator"></div>
+              <div class="world-caption">
+                <div>
+                  <div class="small">Icosahedral Terrain Map</div>
+                  <div class="large" id="worldCaption">World view pending</div>
+                </div>
+                <div class="small">Next: terrain, local, then single 500m hex actions</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-text">Nexus Command Terminal - World View</span>
+      </footer>
+    </div>
+
+    <script type="module" src="js/worldView.js"></script>
+  </body>
+</html>

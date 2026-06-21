@@ -14,6 +14,7 @@ function toApiPayload(payload = {}) {
     description: payload.description ?? null,
     seed: Number(payload.seed),
     grid_tier: payload.grid_tier ?? payload.gridTier,
+    params: payload.params ?? {},
   };
 }
 

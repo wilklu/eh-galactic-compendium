@@ -1,119 +1,404 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EHGC — Atlas</title>
-  <link rel="stylesheet" href="css/styles.css" />
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHGC — Atlas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .atlas-shell {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
+        gap: 14px;
+      }
 
-<body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-badge" aria-hidden="true"></div>
-        <div class="brand-text">
-          <div class="brand-title">EHGC</div>
-          <div class="brand-subtitle">Atlas</div>
-        </div>
-      </div>
+      @media (max-width: 980px) {
+        .atlas-shell {
+          grid-template-columns: 1fr;
+        }
+      }
 
-      <div class="topbar-right">
-        <div class="status">
-          <span class="dot" aria-hidden="true"></span>
-          <span id="systemStatus">SYSTEM ONLINE</span>
-        </div>
-        <div class="clock">
-          <span id="utcClock">--:--:-- UTC</span>
-        </div>
-      </div>
-    </header>
+      .atlas-panel {
+        border: 1px solid rgba(215, 184, 106, 0.24);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(10, 14, 22, 0.94), rgba(6, 10, 18, 0.9));
+        padding: 14px;
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.36);
+      }
 
-    <main class="grid">
-      <!-- Main work -->
-      <section class="panel">
-        <h2 class="panel-title">Atlas Operations</h2>
-        <div class="panel-body">
-          <!-- TODO: Atlas widgets/forms -->
-          <button class="btn primary" id="atlasGenerate">⚡ GENERATE SECTOR SURVEY</button>
-        </div>
-      </section>
+      .atlas-h {
+        margin: 0;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
 
-      <!-- Local console (fresh on load) -->
-      <section class="panel console-panel">
-        <h2 class="panel-title">Console</h2>
+      .atlas-copy {
+        margin-top: 6px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
 
-        <div class="console-meta">
-          <div class="meta-item">
-            <div class="meta-label">Active Programs</div>
-            <div class="meta-value" id="activePrograms">0</div>
+      .atlas-grid {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .atlas-field {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        padding: 8px;
+        background: rgba(8, 12, 20, 0.74);
+      }
+
+      .atlas-field label {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .atlas-field input,
+      .atlas-field select {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        padding: 6px 8px;
+        background: #0b1326;
+        color: var(--gold2);
+        font-family: Rajdhani, sans-serif;
+        font-size: 15px;
+      }
+
+      .atlas-hud {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      @media (max-width: 620px) {
+        .atlas-hud {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .hud-item {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        background: rgba(7, 11, 18, 0.76);
+        padding: 8px;
+      }
+
+      .hud-item .h-label {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .hud-item .h-value {
+        margin-top: 3px;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .range-row {
+        margin-top: 10px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        padding: 8px;
+        background: rgba(8, 12, 20, 0.74);
+      }
+
+      .range-row .top {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .range-row input[type="range"] {
+        width: 100%;
+        margin-top: 8px;
+        accent-color: #d7b86a;
+      }
+
+      .toggle-row {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        padding: 8px;
+        background: rgba(8, 12, 20, 0.74);
+      }
+
+      .toggle-row span {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .toggle-row input {
+        width: 16px;
+        height: 16px;
+        accent-color: #d7b86a;
+      }
+
+      .action-row {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .status-line {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .display-frame {
+        margin-top: 10px;
+        position: relative;
+        border: 1px solid rgba(215, 184, 106, 0.26);
+        border-radius: 14px;
+        overflow: hidden;
+        background: radial-gradient(circle at 50% 38%, #1c2948 0%, #0b1222 55%, #050912 100%);
+      }
+
+      .display-head {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        background: rgba(7, 12, 20, 0.86);
+        border-bottom: 1px solid rgba(215, 184, 106, 0.2);
+        font-size: 11px;
+        color: var(--gold2);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      #atlasGalaxyOverlay {
+        width: 100%;
+        max-height: 540px;
+        object-fit: contain;
+        display: block;
+        position: relative;
+        z-index: 2;
+      }
+
+      .atlas-overlay-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        transition: opacity 320ms ease;
+      }
+
+      .atlas-overlay-grid {
+        z-index: 1;
+        opacity: 0.34;
+        background-image:
+          linear-gradient(rgba(215, 184, 106, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(215, 184, 106, 0.08) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mix-blend-mode: screen;
+      }
+
+      .atlas-overlay-density {
+        z-index: 0;
+        opacity: 0.24;
+        background:
+          radial-gradient(circle at 50% 42%, rgba(255, 236, 199, 0.18), transparent 22%),
+          radial-gradient(circle at 49% 45%, rgba(107, 189, 255, 0.14), transparent 34%),
+          radial-gradient(circle at 51% 50%, rgba(0, 0, 0, 0), transparent 55%);
+      }
+
+      .map-note {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      #atlasGalaxySelect {
+        min-height: 140px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-title">EHGC</div>
+            <div class="brand-subtitle">Atlas</div>
           </div>
-          <div class="meta-item">
-            <div class="meta-label">Output Queue</div>
-            <div class="meta-value" id="outputQueue">0</div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="systemStatus">System Online</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:-- UTC</span>
           </div>
         </div>
+      </header>
 
-        <div class="console" id="atlasConsole">
-          <!-- Boot sequence lines injected by JS -->
-        </div>
+      <main class="atlas-shell">
+        <section class="atlas-panel">
+          <h2 class="atlas-h">Galaxy View Controls</h2>
+          <p class="atlas-copy">
+            Generate a top-tier galaxy shell, tune the GU scale, and place the result as the overlay container for
+            Atlas.
+          </p>
 
-        <div class="console-actions">
-          <button class="btn primary" id="atlasClearConsole">Clear Console</button>
-          <button class="btn" id="atlasRunSelfTest">Run Self-Test</button>
-        </div>
-      </section>
-    </main>
+          <div class="atlas-grid">
+            <div class="atlas-field">
+              <label for="atlasGalaxyName">Galaxy Name</label>
+              <input id="atlasGalaxyName" value="EHGC Atlas Galaxy" />
+            </div>
 
-    <footer class="footer">
-      <span class="footer-text">Local Console • Atlas</span>
-    </footer>
-  </div>
+            <div class="atlas-field">
+              <label for="atlasGalaxySeed">Seed</label>
+              <input id="atlasGalaxySeed" type="number" value="12026" />
+            </div>
 
-  <!-- Keep these modular; names are examples -->
-  <script src="js/app-ui.js"></script>
-  <script>
-    // Unique boot sequence for Atlas (local-only history)
-    const consoleEl = document.getElementById("atlasConsole");
-    consoleEl.innerHTML = "";
+            <div class="atlas-field">
+              <label for="atlasGalaxyTier">Current View Tier</label>
+              <select id="atlasGalaxyTier">
+                <option value="Galaxy View">Galaxy View</option>
+                <option value="Expanse">Expanse</option>
+                <option value="Reach">Reach</option>
+                <option value="Domain">Domain</option>
+                <option value="Region">Region</option>
+                <option value="Quadrant">Quadrant</option>
+                <option value="Sector">Sector</option>
+                <option value="Subsector">Subsector</option>
+                <option value="Hex">Hex</option>
+              </select>
+            </div>
 
-    const bootLines = [
-      "[ATLAS] Initializing epistellar map stream…",
-      "[ATLAS] Calibrating orbital-zone resolver (Table 6)…",
-      "[ATLAS] Loading orbital contents resolver (Table 7)…",
-      "[ATLAS] Operator session ready."
-    ];
+            <div class="atlas-field">
+              <label for="atlasMorphology">Morphology</label>
+              <select id="atlasMorphology">
+                <option value="spiral">Spiral</option>
+                <option value="barred_spiral">Barred Spiral</option>
+                <option value="elliptical">Elliptical</option>
+                <option value="lenticular">Lenticular</option>
+                <option value="irregular">Irregular</option>
+              </select>
+            </div>
+          </div>
 
-    bootLines.forEach((line, i) => {
-      setTimeout(() => {
-        const div = document.createElement("div");
-        div.className = "console-line";
-        div.textContent = line;
-        consoleEl.appendChild(div);
-        consoleEl.scrollTop = consoleEl.scrollHeight;
-      }, 250 + i * 350);
-    });
+          <div class="range-row">
+            <div class="top"><span>GU Scale</span><strong id="atlasGuScaleValue">1.00 Mpc/GU</strong></div>
+            <input id="atlasGuScale" type="range" min="0.25" max="4" step="0.05" value="1" />
+          </div>
 
-    // Example: generate button triggers local console + later sends to dashboard
-    document.getElementById("atlasGenerate").addEventListener("click", () => {
-      const jobId = "atlas_" + Date.now().toString(36);
+          <div class="range-row">
+            <div class="top"><span>Transition Blend</span><strong id="atlasZoomBlendValue">0%</strong></div>
+            <input id="atlasZoomBlend" type="range" min="0" max="100" step="1" value="0" />
+          </div>
 
-      // TODO: local console enqueue/complete; for now log lines:
-      appendLocal(consoleEl, `[ATLAS] JOB_START ${jobId} sector_survey…`);
+          <div class="toggle-row">
+            <span>Smooth Tier Transition</span>
+            <input id="atlasSmoothTransition" type="checkbox" checked />
+          </div>
 
-      setTimeout(() => {
-        // TODO: replace with backend results
-        appendLocal(consoleEl, `[ATLAS] JOB_RESULT ${jobId} Sector systems=24 Worlds=3 Starports=2`);
-      }, 1200);
-    });
+          <div class="toggle-row">
+            <span>Snap on Double Click</span>
+            <input id="atlasSnapOnDoubleClick" type="checkbox" checked />
+          </div>
 
-    function appendLocal(el, text) {
-      const div = document.createElement("div");
-      div.className = "console-line";
-      div.textContent = text;
-      el.appendChild(div);
-      el.scrollTop = el.scrollHeight;
-    }
-  </script>
-</body>
+          <div class="toggle-row">
+            <span>Show Grid Overlay</span>
+            <input id="atlasGridOverlay" type="checkbox" checked />
+          </div>
+
+          <div class="toggle-row">
+            <span>Show Density Heat</span>
+            <input id="atlasDensityOverlay" type="checkbox" checked />
+          </div>
+
+          <div class="action-row">
+            <button class="btn primary" id="atlasGenerate">Generate / Place Galaxy</button>
+            <button class="btn" id="atlasRefresh">Refresh List</button>
+            <button class="btn" id="atlasLoadSelected">Load Selected</button>
+            <button class="btn" id="atlasClearOverlay">Clear Overlay</button>
+          </div>
+
+          <div class="atlas-field" style="margin-top: 12px">
+            <label for="atlasGalaxySelect">Saved Galaxies</label>
+            <select id="atlasGalaxySelect" size="5"></select>
+          </div>
+
+          <div class="status-line" id="atlasStatus">Ready.</div>
+        </section>
+
+        <section class="atlas-panel">
+          <h2 class="atlas-h">Galaxy Overlay</h2>
+          <div class="atlas-hud">
+            <div class="hud-item">
+              <div class="h-label">Current Tier</div>
+              <div class="h-value" id="atlasHudTier">Galaxy View</div>
+            </div>
+            <div class="hud-item">
+              <div class="h-label">GU Scale</div>
+              <div class="h-value" id="atlasHudScale">1.00 Mpc/GU</div>
+            </div>
+            <div class="hud-item">
+              <div class="h-label">Transition</div>
+              <div class="h-value" id="atlasHudTransition">Smooth</div>
+            </div>
+          </div>
+
+          <div class="display-frame">
+            <div class="display-head">
+              <span id="atlasHudName">No galaxy loaded</span>
+              <span id="atlasHudMeta">Top-level shell</span>
+            </div>
+            <div class="atlas-overlay-layer atlas-overlay-density" id="atlasDensityLayer"></div>
+            <div class="atlas-overlay-layer atlas-overlay-grid" id="atlasGridLayer"></div>
+            <img id="atlasGalaxyOverlay" alt="Galaxy overlay" />
+          </div>
+
+          <div class="map-note">
+            The overlay represents the galaxy shell/container. As Atlas zooms into Expanse and Reach, the galaxy view
+            can fade out while the grid becomes dominant. Hex double-click can later resolve to System Orbit View.
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-text">Nexus Command Terminal - Atlas</span>
+      </footer>
+    </div>
+
+    <script type="module" src="js/atlas.js"></script>
+  </body>
 </html>

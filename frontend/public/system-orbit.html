@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHGC — System Orbit View</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .orbit-shell {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      @media (max-width: 980px) {
+        .orbit-shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .orbit-panel {
+        border: 1px solid rgba(215, 184, 106, 0.24);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(10, 14, 22, 0.94), rgba(6, 10, 18, 0.9));
+        padding: 14px;
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.36);
+      }
+
+      .orbit-h {
+        margin: 0;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .orbit-copy {
+        margin-top: 6px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .orbit-grid {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .orbit-field,
+      .orbit-card {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        padding: 8px;
+        background: rgba(8, 12, 20, 0.74);
+      }
+
+      .orbit-field label {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .orbit-field input,
+      .orbit-field select {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        padding: 6px 8px;
+        background: #0b1326;
+        color: var(--gold2);
+        font-family: Rajdhani, sans-serif;
+        font-size: 15px;
+      }
+
+      .orbit-meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 620px) {
+        .orbit-meta {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .meta-tile {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        background: rgba(7, 11, 18, 0.76);
+        padding: 8px;
+      }
+
+      .meta-tile .label {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .meta-tile .value {
+        margin-top: 3px;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .orbit-stage {
+        margin-top: 10px;
+        position: relative;
+        min-height: 540px;
+        border: 1px solid rgba(215, 184, 106, 0.26);
+        border-radius: 14px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.08), transparent 18%),
+          radial-gradient(circle at 50% 48%, rgba(92, 163, 255, 0.12), transparent 30%),
+          radial-gradient(circle at 50% 48%, #1c2948 0%, #0b1222 55%, #050912 100%);
+      }
+
+      .orbit-rings {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .ring {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        border-radius: 50%;
+        border: 1px solid rgba(215, 184, 106, 0.16);
+        transform: translate(-50%, -50%);
+      }
+
+      .ring.core {
+        width: 90px;
+        height: 90px;
+        background: radial-gradient(circle, rgba(255, 240, 200, 0.4), rgba(255, 240, 200, 0.08) 55%, transparent 70%);
+      }
+
+      .ring.orbit {
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+      }
+
+      .orbit-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.58;
+        background-image:
+          radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px),
+          radial-gradient(circle at 50% 50%, rgba(107, 189, 255, 0.1), transparent 48%);
+      }
+
+      .orbit-planet {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle at 30% 30%, #fff, #97c7ff 55%, #2f5d93 100%);
+        box-shadow: 0 0 18px rgba(155, 205, 255, 0.55);
+      }
+
+      .orbit-capture {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 12px;
+      }
+
+      .orbit-caption {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        background: rgba(7, 12, 20, 0.82);
+      }
+
+      .orbit-caption .small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .orbit-caption .large {
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .action-row {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .status-line {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-title">EHGC</div>
+            <div class="brand-subtitle">System Orbit View</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="systemStatus">SYSTEM ONLINE</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:-- UTC</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="orbit-shell">
+        <section class="orbit-panel">
+          <h2 class="orbit-h">Orbit Controls</h2>
+          <p class="orbit-copy">
+            Hex now hands off to the System Orbit View. The orbit ladder runs from 0 to 20 and can later be expanded
+            into world and hex drilling.
+          </p>
+
+          <div class="orbit-grid">
+            <div class="orbit-field">
+              <label for="orbitGalaxySelect">Galaxy Record</label>
+              <select id="orbitGalaxySelect"></select>
+            </div>
+
+            <div class="orbit-field">
+              <label for="orbitRing">Orbital Ring</label>
+              <input id="orbitRing" type="range" min="0" max="20" step="1" value="0" />
+            </div>
+
+            <div class="orbit-field">
+              <label for="orbitMarker">System Marker</label>
+              <input id="orbitMarker" type="text" value="Hex Anchor" />
+            </div>
+          </div>
+
+          <div class="orbit-meta">
+            <div class="meta-tile">
+              <div class="label">Galaxy</div>
+              <div class="value" id="orbitHudName">No galaxy selected</div>
+            </div>
+            <div class="meta-tile">
+              <div class="label">GU Scale</div>
+              <div class="value" id="orbitHudScale">1.00 Mpc/GU</div>
+            </div>
+            <div class="meta-tile">
+              <div class="label">Ring</div>
+              <div class="value" id="orbitHudRing">0</div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn primary" id="orbitRefresh">Refresh Galaxies</button>
+            <button class="btn" id="orbitBackToAtlas">Back to Atlas</button>
+          </div>
+
+          <div class="status-line" id="orbitStatus">Ready.</div>
+        </section>
+
+        <section class="orbit-panel">
+          <h2 class="orbit-h">Orbit Display</h2>
+          <div class="orbit-stage" id="orbitStage">
+            <div class="orbit-rings" id="orbitRings"></div>
+            <div class="orbit-overlay"></div>
+            <div class="orbit-planet" id="orbitPlanet"></div>
+            <div class="orbit-capture">
+              <div class="orbit-caption">
+                <div>
+                  <div class="small">System Orbit View</div>
+                  <div class="large" id="orbitCaption">Hex orbit pending</div>
+                </div>
+                <div class="small">Double click later can descend to world view</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-text">Nexus Command Terminal - System Orbit View</span>
+      </footer>
+    </div>
+
+    <script type="module" src="js/systemOrbit.js"></script>
+  </body>
+</html>

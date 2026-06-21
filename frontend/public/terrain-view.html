@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHGC — Terrain View</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .terrain-shell {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(320px, 360px) minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      @media (max-width: 980px) {
+        .terrain-shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .terrain-panel {
+        border: 1px solid rgba(215, 184, 106, 0.24);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(9, 14, 23, 0.94), rgba(6, 9, 17, 0.9));
+        padding: 14px;
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.36);
+      }
+
+      .terrain-h {
+        margin: 0;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .terrain-copy {
+        margin-top: 6px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .terrain-field {
+        margin-top: 10px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        background: rgba(8, 12, 20, 0.74);
+        padding: 8px;
+      }
+
+      .terrain-field label {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .terrain-field input,
+      .terrain-field select {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        padding: 6px 8px;
+        background: #0b1326;
+        color: var(--gold2);
+        font-family: Rajdhani, sans-serif;
+        font-size: 15px;
+      }
+
+      .terrain-meta {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      @media (max-width: 620px) {
+        .terrain-meta {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .terrain-stat {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        background: rgba(7, 11, 18, 0.76);
+        padding: 8px;
+      }
+
+      .terrain-stat .label {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .terrain-stat .value {
+        margin-top: 3px;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .terrain-stage {
+        margin-top: 10px;
+        position: relative;
+        min-height: 620px;
+        border: 1px solid rgba(215, 184, 106, 0.26);
+        border-radius: 14px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06), transparent 16%),
+          linear-gradient(135deg, #0c1220 0%, #172437 40%, #07111d 100%);
+      }
+
+      .terrain-map {
+        position: absolute;
+        inset: 8% 7%;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .terrain-hex {
+        position: relative;
+        clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        border: 1px solid rgba(170, 205, 255, 0.25);
+        background: rgba(109, 159, 218, 0.12);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+        min-height: 72px;
+        transition:
+          transform 140ms ease,
+          box-shadow 140ms ease,
+          background 140ms ease;
+      }
+
+      .terrain-hex:hover {
+        transform: translateY(-1px) scale(1.01);
+        box-shadow: 0 0 16px rgba(126, 184, 255, 0.18);
+      }
+
+      .terrain-hex.mountain {
+        background: rgba(157, 187, 227, 0.18);
+      }
+
+      .terrain-hex.ocean {
+        background: rgba(78, 151, 217, 0.18);
+      }
+
+      .terrain-hex.forest {
+        background: rgba(89, 182, 132, 0.18);
+      }
+
+      .terrain-hex.desert {
+        background: rgba(228, 185, 109, 0.16);
+      }
+
+      .terrain-hex.wilds {
+        background: rgba(176, 124, 214, 0.16);
+        border-color: rgba(176, 124, 214, 0.3);
+      }
+
+      .terrain-hex.settlement {
+        background: rgba(255, 242, 196, 0.28);
+        border-color: rgba(255, 242, 196, 0.72);
+      }
+
+      .terrain-hex .tag {
+        position: absolute;
+        left: 8px;
+        bottom: 7px;
+        right: 8px;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+      }
+
+      .terrain-caption {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        background: rgba(7, 12, 20, 0.84);
+      }
+
+      .terrain-caption .small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .terrain-caption .large {
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .action-row {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .status-line {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-title">EHGC</div>
+            <div class="brand-subtitle">Terrain View</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="terrainStatusHeader">SYSTEM ONLINE</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:-- UTC</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="terrain-shell">
+        <section class="terrain-panel">
+          <h2 class="terrain-h">Terrain Controls</h2>
+          <p class="terrain-copy">
+            World hexes collapse into a focused local map. Double-click any terrain cell to prepare the next single-hex
+            drilldown.
+          </p>
+
+          <div class="terrain-field">
+            <label for="terrainGalaxySelect">Galaxy Record</label>
+            <select id="terrainGalaxySelect"></select>
+          </div>
+
+          <div class="terrain-field">
+            <label for="terrainMarker">Landing Marker</label>
+            <input id="terrainMarker" type="text" value="Landing Site" />
+          </div>
+
+          <div class="terrain-field">
+            <label for="terrainBand">Terrain Band</label>
+            <select id="terrainBand">
+              <option value="coast">Coastal Shelf</option>
+              <option value="highland">Highland Ridge</option>
+              <option value="wilds">Wilds Corridor</option>
+              <option value="capital">Settlement Core</option>
+            </select>
+          </div>
+
+          <div class="terrain-meta">
+            <div class="terrain-stat">
+              <div class="label">Galaxy</div>
+              <div class="value" id="terrainHudGalaxy">No galaxy selected</div>
+            </div>
+            <div class="terrain-stat">
+              <div class="label">World Hex</div>
+              <div class="value" id="terrainHudWorldHex">-</div>
+            </div>
+            <div class="terrain-stat">
+              <div class="label">Band</div>
+              <div class="value" id="terrainHudBand">Coastal Shelf</div>
+            </div>
+            <div class="terrain-stat">
+              <div class="label">Scale</div>
+              <div class="value" id="terrainHudScale">2.8 km</div>
+            </div>
+          </div>
+
+          <div class="terrain-meta">
+            <div class="terrain-stat">
+              <div class="label">Selected Cell</div>
+              <div class="value" id="terrainHudCell">None</div>
+            </div>
+            <div class="terrain-stat">
+              <div class="label">Elevation</div>
+              <div class="value" id="terrainHudElevation">-</div>
+            </div>
+            <div class="terrain-stat">
+              <div class="label">Climate</div>
+              <div class="value" id="terrainHudClimate">-</div>
+            </div>
+            <div class="terrain-stat">
+              <div class="label">Feature</div>
+              <div class="value" id="terrainHudFeature">-</div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn primary" id="terrainOpenSingle">Open Single Hex</button>
+            <button class="btn" id="terrainBackToWorld">Back to World</button>
+          </div>
+
+          <div class="status-line" id="terrainStatus">Ready.</div>
+        </section>
+
+        <section class="terrain-panel">
+          <h2 class="terrain-h">Terrain Display</h2>
+          <div class="terrain-stage">
+            <div class="terrain-map" id="terrainMap"></div>
+            <div class="terrain-caption">
+              <div>
+                <div class="small">Local terrain lattice</div>
+                <div class="large" id="terrainCaption">Awaiting world selection</div>
+              </div>
+              <div class="small">Next: single 500m hex view</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-text">Nexus Command Terminal - Terrain View</span>
+      </footer>
+    </div>
+
+    <script type="module" src="js/terrainView.js"></script>
+  </body>
+</html>

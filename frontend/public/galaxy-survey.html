@@ -3,193 +3,521 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>EHGC — Galaxy Survey</title>
+    <title>EHGC - Galaxy Survey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/styles.css" />
     <style>
-      .survey-layout {
-        display: grid;
-        grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
-        gap: 14px;
+      .survey-shell {
         margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
+        gap: 14px;
       }
 
       @media (max-width: 980px) {
-        .survey-layout {
+        .survey-shell {
           grid-template-columns: 1fr;
         }
       }
 
-      .survey-card {
-        background: linear-gradient(180deg, rgba(11, 17, 30, 0.95), rgba(8, 13, 24, 0.92));
-        border: 1px solid rgba(215, 184, 106, 0.22);
+      .survey-panel {
+        border: 1px solid rgba(215, 184, 106, 0.24);
         border-radius: 16px;
+        background: linear-gradient(180deg, rgba(10, 14, 22, 0.94), rgba(6, 10, 18, 0.9));
         padding: 14px;
-        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.36);
       }
 
-      .survey-title {
-        margin: 0 0 6px;
+      .survey-h {
+        margin: 0;
+        font-family: Orbitron, Rajdhani, sans-serif;
         font-size: 12px;
         letter-spacing: 0.16em;
         text-transform: uppercase;
         color: var(--gold);
       }
 
-      .survey-subtle {
-        margin: 0;
+      .survey-copy {
+        margin-top: 6px;
+        margin-bottom: 0;
         color: var(--muted);
         font-size: 12px;
       }
 
-      .nav-ribbon {
+      .ribbon {
+        margin-top: 12px;
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 8px;
-        margin-top: 12px;
       }
 
       @media (max-width: 620px) {
-        .nav-ribbon {
+        .ribbon {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
-      .nav-cell {
-        border: 1px solid rgba(215, 184, 106, 0.2);
+      .ribbon-cell {
+        background: rgba(7, 12, 20, 0.8);
+        border: 1px solid rgba(215, 184, 106, 0.22);
         border-radius: 10px;
         padding: 6px;
-        background: rgba(6, 10, 18, 0.6);
       }
 
-      .nav-cell label {
+      .ribbon-cell label {
         display: block;
+        color: var(--muted);
         font-size: 10px;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--muted);
+        letter-spacing: 0.08em;
         margin-bottom: 4px;
       }
 
-      .nav-cell select {
+      .ribbon-cell select {
         width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        padding: 6px;
         background: #0b1326;
         color: var(--gold2);
-        border: 1px solid rgba(215, 184, 106, 0.3);
-        border-radius: 8px;
-        padding: 6px;
       }
 
-      .survey-form {
+      .knob-grid {
         margin-top: 12px;
         display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px;
       }
 
-      .survey-form .label {
-        display: block;
-        margin-bottom: 4px;
-        font-size: 11px;
+      .knob {
+        text-align: center;
+      }
+
+      .knob button {
+        width: 82px;
+        height: 82px;
+        border-radius: 50%;
+        border: 1px solid rgba(215, 184, 106, 0.34);
+        background: radial-gradient(circle at 32% 28%, #2d3f65, #0d162b 62%, #091121 100%);
+        color: var(--gold2);
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow:
+          inset 0 0 18px rgba(0, 0, 0, 0.55),
+          0 0 16px rgba(215, 184, 106, 0.16);
+      }
+
+      .knob .k-label {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: var(--muted);
       }
 
-      .survey-form .input,
-      .survey-form textarea,
-      .survey-form select {
-        width: 100%;
-        background: #0b1326;
-        color: var(--gold2);
-        border: 1px solid rgba(215, 184, 106, 0.28);
+      .knob .k-value {
+        margin-top: 3px;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .sliders {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .s-row {
+        border: 1px solid rgba(215, 184, 106, 0.2);
         border-radius: 10px;
-        padding: 8px 10px;
+        padding: 8px;
+        background: rgba(8, 12, 20, 0.74);
       }
 
-      .survey-form textarea {
-        min-height: 108px;
-        resize: vertical;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-        font-size: 12px;
+      .s-top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
       }
 
-      .action-grid {
+      .s-row input[type="range"] {
+        width: 100%;
+        margin-top: 6px;
+        accent-color: #d7b86a;
+      }
+
+      .switches {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      @media (max-width: 620px) {
+        .switches {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .switch {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        background: rgba(6, 10, 18, 0.78);
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        padding: 8px;
+      }
+
+      .switch span {
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .switch input {
+        width: 16px;
+        height: 16px;
+        accent-color: #d7b86a;
+      }
+
+      .property-block {
+        margin-top: 12px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 12px;
+        padding: 10px;
+        background: rgba(8, 12, 20, 0.7);
+      }
+
+      .property-title {
+        margin: 0 0 8px;
+        color: var(--gold);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-family: Orbitron, Rajdhani, sans-serif;
+      }
+
+      .property-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
       }
 
-      .hud-strip {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
-        margin-top: 10px;
+      @media (max-width: 620px) {
+        .property-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
-      .hud-pill {
-        background: rgba(6, 10, 18, 0.75);
-        border: 1px solid rgba(215, 184, 106, 0.22);
+      .property-field label {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .property-field select,
+      .property-field input {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        padding: 6px 8px;
+        background: #0b1326;
+        color: var(--gold2);
+      }
+
+      .context-panel {
+        margin-top: 12px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 12px;
+        padding: 10px;
+        background: linear-gradient(180deg, rgba(9, 14, 22, 0.85), rgba(7, 11, 18, 0.72));
+      }
+
+      .context-panel h3 {
+        margin: 0 0 8px;
+        color: var(--gold);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-family: Orbitron, Rajdhani, sans-serif;
+      }
+
+      .context-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      @media (max-width: 620px) {
+        .context-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .context-item {
+        border: 1px solid rgba(215, 184, 106, 0.18);
         border-radius: 10px;
+        background: rgba(6, 10, 18, 0.72);
         padding: 8px;
       }
 
-      .hud-label {
-        font-size: 10px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+      .context-item .label {
         color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
       }
 
-      .hud-value {
-        margin-top: 4px;
-        font-weight: 800;
-        font-size: 14px;
+      .context-item .value {
+        margin-top: 3px;
+        color: var(--gold2);
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
       }
 
-      .preview-wrap {
-        position: relative;
+      .form-block {
+        margin-top: 12px;
+      }
+
+      .f-label {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .f-control {
+        width: 100%;
+        background: #0b1326;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        color: var(--gold2);
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-family: Rajdhani, sans-serif;
+        font-size: 16px;
+      }
+
+      #paramsJson {
+        min-height: 100px;
+        resize: vertical;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+      }
+
+      .action-row {
         margin-top: 10px;
-        border-radius: 14px;
-        border: 1px solid rgba(215, 184, 106, 0.24);
-        overflow: hidden;
-        background: radial-gradient(circle at 50% 40%, #1a2542 0%, #0b1120 55%, #050913 100%);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
       }
 
-      .preview-overlay {
-        position: absolute;
-        left: 10px;
-        right: 10px;
-        top: 10px;
+      .status-line {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .console-panel {
+        margin-top: 12px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 12px;
+        padding: 10px;
+        background: linear-gradient(180deg, rgba(7, 11, 18, 0.92), rgba(4, 8, 14, 0.88));
+      }
+
+      .console-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        pointer-events: none;
+        gap: 10px;
+        margin-bottom: 8px;
+        color: var(--gold2);
         font-size: 11px;
-        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: rgba(241, 220, 154, 0.9);
+        letter-spacing: 0.08em;
       }
 
-      .preview-chip {
-        background: rgba(6, 10, 18, 0.68);
-        border: 1px solid rgba(215, 184, 106, 0.25);
-        border-radius: 999px;
-        padding: 4px 10px;
+      .console-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .console-controls select,
+      .console-controls button {
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.26);
+        background: rgba(8, 13, 22, 0.88);
+        color: var(--gold2);
+        padding: 4px 8px;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+      }
+
+      .console-controls button {
+        cursor: pointer;
+      }
+
+      .console-head strong {
+        color: var(--gold);
+        font-family: Orbitron, Rajdhani, sans-serif;
+      }
+
+      #surveyConsole {
+        min-height: 140px;
+        max-height: 220px;
+        overflow: auto;
+        border-radius: 10px;
+        border: 1px solid rgba(215, 184, 106, 0.18);
+        background: rgba(3, 6, 10, 0.9);
+        padding: 10px 12px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #dfe8ff;
+        white-space: pre-wrap;
+      }
+
+      .console-prompt {
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #9ef0ba;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+      }
+
+      .console-prompt .cursor {
+        width: 8px;
+        height: 14px;
+        background: #9ef0ba;
+        box-shadow: 0 0 10px rgba(158, 240, 186, 0.6);
+        animation: surveyBlinkCursor 1s steps(1, end) infinite;
+      }
+
+      .console-line {
+        opacity: 0;
+        transform: translateY(4px);
+        animation: surveyConsoleIn 160ms ease forwards;
+      }
+
+      .console-line.dim {
+        color: rgba(223, 232, 255, 0.7);
+      }
+
+      .console-line.warn {
+        color: #ffd166;
+      }
+
+      .console-line.good {
+        color: #9ef0ba;
+      }
+
+      @keyframes surveyConsoleIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes surveyBlinkCursor {
+        0%,
+        49% {
+          opacity: 1;
+        }
+
+        50%,
+        100% {
+          opacity: 0.2;
+        }
+      }
+
+      .hud {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      @media (max-width: 820px) {
+        .hud {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .hud-item {
+        border: 1px solid rgba(215, 184, 106, 0.22);
+        border-radius: 10px;
+        background: rgba(7, 11, 18, 0.76);
+        padding: 8px;
+      }
+
+      .hud-item .h-label {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .hud-item .h-value {
+        margin-top: 3px;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .display-frame {
+        margin-top: 10px;
+        border: 1px solid rgba(215, 184, 106, 0.26);
+        border-radius: 14px;
+        overflow: hidden;
+        background: radial-gradient(circle at 50% 38%, #1c2948 0%, #0b1222 55%, #050912 100%);
+      }
+
+      .display-head {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        background: rgba(7, 12, 20, 0.86);
+        border-bottom: 1px solid rgba(215, 184, 106, 0.2);
+        font-size: 11px;
+        color: var(--gold2);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
       }
 
       #galaxyPreviewImg {
         width: 100%;
-        max-height: 470px;
+        max-height: 490px;
         object-fit: contain;
         display: block;
       }
 
-      .saved-head {
+      .saved {
         margin-top: 10px;
         padding-top: 10px;
         border-top: 1px dashed rgba(215, 184, 106, 0.24);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
       }
 
       #galaxyList {
@@ -224,151 +552,657 @@
         <div class="topbar-right">
           <div class="status">
             <span class="dot" aria-hidden="true"></span>
-      <main class="survey-layout">
-        <section class="survey-card">
-          <h2 class="survey-title">Survey Command</h2>
-          <p class="survey-subtle">Galaxy Survey control deck modeled after your reference console.</p>
+            <span id="systemStatus">System Online</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:-- UTC</span>
+          </div>
+        </div>
+      </header>
 
-          <div class="nav-ribbon">
-            <div class="nav-cell">
+      <main class="survey-shell">
+        <section class="survey-panel">
+          <h2 class="survey-h">Survey Command Deck</h2>
+          <p class="survey-copy">Operate knobs, sliders, and switches to shape survey telemetry before generation.</p>
+
+          <div class="ribbon">
+            <div class="ribbon-cell">
               <label>Expanse</label>
-              <select>
+              <select id="navExpanse">
                 <option>Alpha</option>
                 <option>Beta</option>
                 <option>Gamma</option>
+                <option>Delta</option>
               </select>
             </div>
-            <div class="nav-cell">
+            <div class="ribbon-cell">
               <label>Reach</label>
-              <select>
+              <select id="navReach">
                 <option>Inner</option>
                 <option>Outer</option>
                 <option>Deep</option>
+                <option>Void</option>
               </select>
             </div>
-            <div class="nav-cell">
-              <label>Region</label>
-              <select>
-                <option>Cluster</option>
-                <option>Nebula</option>
-                <option>Rift</option>
-              </select>
-            </div>
-            <div class="nav-cell">
+            <div class="ribbon-cell">
               <label>Sector</label>
-              <select>
+              <select id="navSector">
                 <option>Prime</option>
                 <option>Secundus</option>
                 <option>Tertius</option>
+                <option>Quartus</option>
+              </select>
+            </div>
+            <div class="ribbon-cell">
+              <label>Hex</label>
+              <select id="navHex">
+                <option>01</option>
+                <option>02</option>
+                <option>03</option>
+                <option>04</option>
               </select>
             </div>
           </div>
 
-          <div class="survey-form">
-            <div>
-              <label class="label" for="galaxyName">Galaxy Name</label>
-              <input class="input" id="galaxyName" placeholder="e.g., Perseus Reach" value="Unnamed Galaxy" />
+          <div class="knob-grid">
+            <div class="knob">
+              <button id="knobDensity" type="button" title="Left click +5, right click -5">0</button>
+              <div class="k-label">Density Bias</div>
+              <div class="k-value" id="kDensityValue">0%</div>
             </div>
-
-            <div>
-              <label class="label" for="gridTier">Grid Tier</label>
-              <select class="input" id="gridTier">
-                <option value="Sector">Sector</option>
-                <option value="Subsector">Subsector</option>
-                <option value="System">System</option>
-              </select>
+            <div class="knob">
+              <button id="knobAnomaly" type="button" title="Left click +5, right click -5">0</button>
+              <div class="k-label">Anomaly Rate</div>
+              <div class="k-value" id="kAnomalyValue">0%</div>
             </div>
-
-            <div>
-              <label class="label" for="seed">Seed</label>
-              <input class="input" id="seed" type="number" value="12345" />
+            <div class="knob">
+              <button id="knobMetal" type="button" title="Left click +5, right click -5">0</button>
+              <div class="k-label">Metallicity Bias</div>
+              <div class="k-value" id="kMetalValue">0%</div>
             </div>
+          </div>
 
-            <div class="action-grid">
-              <button class="btn" id="btnGenerate">Preview</button>
-              <button class="btn primary" id="btnSave">Save</button>
-              <button class="btn" id="btnUpdate">Update</button>
-              <button class="btn" id="btnDelete">Delete</button>
+          <div class="sliders">
+            <div class="s-row">
+              <div class="s-top"><span>Core Intensity</span><strong id="sCoreValue">45</strong></div>
+              <input id="sCore" type="range" min="0" max="100" value="45" />
             </div>
-
-            <div>
-              <label class="label" for="paramsJson">Params JSON</label>
-              <textarea class="input" id="paramsJson" rows="6" placeholder="{}">{}</textarea>
+            <div class="s-row">
+              <div class="s-top"><span>Rift Spread</span><strong id="sRiftValue">35</strong></div>
+              <input id="sRift" type="range" min="0" max="100" value="35" />
             </div>
+            <div class="s-row">
+              <div class="s-top"><span>Nebula Mix</span><strong id="sNebulaValue">20</strong></div>
+              <input id="sNebula" type="range" min="0" max="100" value="20" />
+            </div>
+          </div>
 
-            <p class="muted" id="console">Ready.</p>
+          <div class="switches">
+            <label class="switch"><span>Enable Rifts</span><input id="swRifts" type="checkbox" checked /></label>
+            <label class="switch"><span>Enable Core Boost</span><input id="swCore" type="checkbox" checked /></label>
+            <label class="switch"><span>Nebula Influence</span><input id="swNebula" type="checkbox" /></label>
+          </div>
+
+          <div class="property-block">
+            <h3 class="property-title">Spectral Analysis - Galaxy Properties</h3>
+            <div class="property-grid">
+              <div class="property-field">
+                <label for="gpMorphology">Morphology</label>
+                <select id="gpMorphology">
+                  <option value="spiral">Spiral</option>
+                  <option value="barred_spiral">Barred Spiral</option>
+                  <option value="elliptical">Elliptical</option>
+                  <option value="lenticular">Lenticular</option>
+                  <option value="irregular">Irregular</option>
+                </select>
+              </div>
+
+              <div class="property-field">
+                <label for="gpAgeByr">Age (Byr)</label>
+                <input id="gpAgeByr" type="number" min="1" max="14" step="0.1" value="8.6" />
+              </div>
+
+              <div class="property-field">
+                <label for="gpMetallicity">Metallicity</label>
+                <select id="gpMetallicity">
+                  <option value="very_low">Very Low</option>
+                  <option value="low">Low</option>
+                  <option value="solar" selected>Solar</option>
+                  <option value="high">High</option>
+                  <option value="very_high">Very High</option>
+                </select>
+              </div>
+
+              <div class="property-field">
+                <label for="gpCoreDensity">Core Density</label>
+                <select id="gpCoreDensity">
+                  <option value="diffuse">Diffuse</option>
+                  <option value="balanced" selected>Balanced</option>
+                  <option value="dense">Dense</option>
+                  <option value="ultra_dense">Ultra Dense</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="context-panel">
+            <h3>Survey Context</h3>
+            <div class="context-grid">
+              <div class="context-item">
+                <div class="label">Origin</div>
+                <div class="value" id="surveyContextOrigin">Manual entry</div>
+              </div>
+              <div class="context-item">
+                <div class="label">Route</div>
+                <div class="value" id="surveyContextRoute">No route loaded</div>
+              </div>
+              <div class="context-item">
+                <div class="label">Terrain</div>
+                <div class="value" id="surveyContextTerrain">None</div>
+              </div>
+              <div class="context-item">
+                <div class="label">Marker</div>
+                <div class="value" id="surveyContextMarker">Landing Site</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <label class="f-label" for="galaxyName">Galaxy Name</label>
+            <input id="galaxyName" class="f-control" placeholder="e.g., Perseus Reach" value="Unnamed Galaxy" />
+          </div>
+
+          <div class="form-block">
+            <label class="f-label" for="gridTier">Grid Tier</label>
+            <select id="gridTier" class="f-control">
+              <option value="Sector">Sector</option>
+              <option value="Subsector">Subsector</option>
+              <option value="System">System</option>
+            </select>
+          </div>
+
+          <div class="form-block">
+            <label class="f-label" for="seed">Seed</label>
+            <input id="seed" class="f-control" type="number" value="12345" />
+            <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap">
+              <button class="btn" id="btnRandomSeed" type="button">Randomize Seed</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn" id="btnGenerate">Preview</button>
+            <button class="btn primary" id="btnSave">Save</button>
+            <button class="btn" id="btnUpdate">Update</button>
+            <button class="btn" id="btnDelete">Delete</button>
+          </div>
+
+          <div class="form-block">
+            <label class="f-label" for="paramsJson">Params JSON</label>
+            <textarea id="paramsJson" class="f-control" rows="5">{}</textarea>
+          </div>
+
+          <p class="status-line" id="console">Ready.</p>
+
+          <div class="console-panel">
+            <div class="console-head">
+              <strong>Survey Console</strong>
+              <div class="console-controls">
+                <span id="surveyConsoleState">Booting</span>
+                <select id="surveySeverityFilter" aria-label="Filter console severity">
+                  <option value="all">All</option>
+                  <option value="info">Info</option>
+                  <option value="good">Success</option>
+                  <option value="warn">Warning</option>
+                </select>
+                <button id="surveyConsoleClear" type="button">Clear</button>
+              </div>
+            </div>
+            <div id="surveyConsole" aria-live="polite" aria-label="Galaxy Survey console"></div>
+            <div class="console-prompt" aria-hidden="true">
+              <span id="surveyConsolePrompt">READY&gt;</span>
+              <span class="cursor"></span>
+            </div>
           </div>
         </section>
 
-        <section class="survey-card">
-          <h2 class="survey-title">Survey Display</h2>
+        <section class="survey-panel">
+          <h2 class="survey-h">Survey Display</h2>
 
-          <div class="hud-strip">
-            <div class="hud-pill">
-              <div class="hud-label">Current Seed</div>
-              <div class="hud-value" id="hudSeed">12345</div>
+          <div class="hud">
+            <div class="hud-item">
+              <div class="h-label">Seed</div>
+              <div class="h-value" id="hudSeed">12345</div>
             </div>
-            <div class="hud-pill">
-              <div class="hud-label">Grid Tier</div>
-              <div class="hud-value" id="hudTier">Sector</div>
+            <div class="hud-item">
+              <div class="h-label">Tier</div>
+              <div class="h-value" id="hudTier">Sector</div>
             </div>
-            <div class="hud-pill">
-              <div class="hud-label">Signal</div>
-              <div class="hud-value">Nominal</div>
+            <div class="hud-item">
+              <div class="h-label">Name</div>
+              <div class="h-value" id="hudName">Unnamed</div>
+            </div>
+            <div class="hud-item">
+              <div class="h-label">Signal</div>
+              <div class="h-value">Nominal</div>
             </div>
           </div>
 
-          <div class="preview-wrap">
-            <div class="preview-overlay">
-              <span class="preview-chip">Galaxy Survey</span>
-              <span class="preview-chip" id="hudName">Unnamed Galaxy</span>
+          <div class="display-frame">
+            <div class="display-head">
+              <span>Galaxy Survey Visualization</span>
+              <span id="hudMode">Simulate</span>
             </div>
             <img id="galaxyPreviewImg" alt="Galaxy preview" />
           </div>
 
-          <div class="saved-head">
-            <h3 class="survey-title" style="margin: 0">Saved Galaxies</h3>
-            <span class="survey-subtle">Select to load and edit</span>
+          <div class="saved">
+            <h3 class="survey-h" style="margin: 0">Saved Galaxies</h3>
+            <p class="survey-copy">Load an existing record to continue calibration.</p>
+            <div id="galaxyList"></div>
           </div>
-          <div id="galaxyList"></div>
-        </section>
-            />
-
-            <div style="margin-top: 12px">
-              <h3 class="panel-title" style="font-size: 1rem; margin-bottom: 8px">Saved Galaxies</h3>
-              <div id="galaxyList" style="display: flex; flex-wrap: wrap; gap: 8px"></div>
-            </div>
-          </div>
-    <script type="module">
-      import { startUtcClock } from "./js/app-ui.js";
-
-      const seedEl = document.getElementById("seed");
-      const tierEl = document.getElementById("gridTier");
-      const nameEl = document.getElementById("galaxyName");
-
-      const hudSeed = document.getElementById("hudSeed");
-      const hudTier = document.getElementById("hudTier");
-      const hudName = document.getElementById("hudName");
-
-      function syncHud() {
-        hudSeed.textContent = seedEl.value || "-";
-        hudTier.textContent = tierEl.value || "-";
-        hudName.textContent = nameEl.value || "Unnamed Galaxy";
-      }
-
-      startUtcClock(document.getElementById("utcClock"));
-      seedEl.addEventListener("input", syncHud);
-      tierEl.addEventListener("change", syncHud);
-      nameEl.addEventListener("input", syncHud);
-      syncHud();
-    </script>
         </section>
       </main>
 
       <footer class="footer">
-        <span class="footer-text">Local Console • Galaxy Survey</span>
+        <span class="footer-text">Nexus Command Terminal - Galaxy Survey</span>
       </footer>
     </div>
+
+    <script type="module">
+      import { startUtcClock } from "./js/app-ui.js";
+
+      const seedEl = document.getElementById("seed");
+      const randomSeedBtn = document.getElementById("btnRandomSeed");
+      const tierEl = document.getElementById("gridTier");
+      const nameEl = document.getElementById("galaxyName");
+      const paramsEl = document.getElementById("paramsJson");
+
+      const hudSeed = document.getElementById("hudSeed");
+      const hudTier = document.getElementById("hudTier");
+      const hudName = document.getElementById("hudName");
+      const hudMode = document.getElementById("hudMode");
+      const surveyContextOrigin = document.getElementById("surveyContextOrigin");
+      const surveyContextRoute = document.getElementById("surveyContextRoute");
+      const surveyContextTerrain = document.getElementById("surveyContextTerrain");
+      const surveyContextMarker = document.getElementById("surveyContextMarker");
+      const surveyConsole = document.getElementById("surveyConsole");
+      const surveyConsoleState = document.getElementById("surveyConsoleState");
+      const surveyConsolePrompt = document.getElementById("surveyConsolePrompt");
+      const surveySeverityFilter = document.getElementById("surveySeverityFilter");
+      const surveyConsoleClear = document.getElementById("surveyConsoleClear");
+
+      const sliders = {
+        coreIntensity: document.getElementById("sCore"),
+        riftSpread: document.getElementById("sRift"),
+        nebulaMix: document.getElementById("sNebula"),
+      };
+
+      const sliderLabels = {
+        coreIntensity: document.getElementById("sCoreValue"),
+        riftSpread: document.getElementById("sRiftValue"),
+        nebulaMix: document.getElementById("sNebulaValue"),
+      };
+
+      const switches = {
+        enableRifts: document.getElementById("swRifts"),
+        enableCoreBoost: document.getElementById("swCore"),
+        nebulaInfluence: document.getElementById("swNebula"),
+      };
+
+      const nav = {
+        expanse: document.getElementById("navExpanse"),
+        reach: document.getElementById("navReach"),
+        sector: document.getElementById("navSector"),
+        hex: document.getElementById("navHex"),
+      };
+
+      const galaxyProperties = {
+        morphology: document.getElementById("gpMorphology"),
+        ageByr: document.getElementById("gpAgeByr"),
+        metallicity: document.getElementById("gpMetallicity"),
+        coreDensity: document.getElementById("gpCoreDensity"),
+      };
+
+      const knobs = {
+        densityBias: {
+          btn: document.getElementById("knobDensity"),
+          out: document.getElementById("kDensityValue"),
+          value: 0,
+        },
+        anomalyRate: {
+          btn: document.getElementById("knobAnomaly"),
+          out: document.getElementById("kAnomalyValue"),
+          value: 0,
+        },
+        metallicityBias: {
+          btn: document.getElementById("knobMetal"),
+          out: document.getElementById("kMetalValue"),
+          value: 0,
+        },
+      };
+
+      let pendingSurveyContext = null;
+      const SURVEY_SEVERITY_FILTER_KEY = "ehgc_survey_severity_filter";
+
+      function normalizeConsoleTone(tone) {
+        if (tone === "warn") return "warn";
+        if (tone === "good") return "good";
+        return "info";
+      }
+
+      function appendSurveyConsoleLine(text, tone = "dim") {
+        const line = document.createElement("div");
+        line.className = `console-line ${tone}`;
+        line.dataset.severity = normalizeConsoleTone(tone);
+        line.textContent = text;
+        surveyConsole.appendChild(line);
+        applySurveyConsoleFilter();
+        surveyConsole.scrollTop = surveyConsole.scrollHeight;
+      }
+
+      function applySurveyConsoleFilter() {
+        const selected = surveySeverityFilter.value;
+        const lines = surveyConsole.querySelectorAll(".console-line");
+        lines.forEach((line) => {
+          const level = line.dataset.severity || "info";
+          line.style.display = selected === "all" || selected === level ? "" : "none";
+        });
+      }
+
+      function loadSavedSurveyFilter() {
+        try {
+          const saved = window.localStorage.getItem(SURVEY_SEVERITY_FILTER_KEY);
+          if (!saved) return;
+
+          const valid = ["all", "info", "good", "warn"];
+          if (valid.includes(saved)) {
+            surveySeverityFilter.value = saved;
+          }
+        } catch {
+          // Ignore storage read issues and keep default filter.
+        }
+      }
+
+      function saveSurveyFilter() {
+        try {
+          window.localStorage.setItem(SURVEY_SEVERITY_FILTER_KEY, surveySeverityFilter.value);
+        } catch {
+          // Ignore storage write issues.
+        }
+      }
+
+      function clearSurveyConsole() {
+        surveyConsole.innerHTML = "";
+        appendSurveyConsoleLine("[EHGC] Survey console cleared.", "dim");
+        surveyConsolePrompt.textContent = "READY>";
+        surveyConsoleState.textContent = "Ready";
+      }
+
+      function bootSurveyConsole() {
+        surveyConsole.innerHTML = "";
+        surveyConsoleState.textContent = "Booting";
+        surveyConsolePrompt.textContent = "BOOT>";
+        appendSurveyConsoleLine("[EHGC] Galaxy Survey console initializing…", "dim");
+        setTimeout(() => appendSurveyConsoleLine("[EHGC] Knobs, switches, and telemetry rails online.", "dim"), 260);
+        setTimeout(() => appendSurveyConsoleLine("[EHGC] Awaiting galaxy generation or record load.", "dim"), 560);
+        setTimeout(() => {
+          appendSurveyConsoleLine("[EHGC] Survey console ready.", "good");
+          surveyConsoleState.textContent = "Ready";
+          surveyConsolePrompt.textContent = "READY>";
+        }, 860);
+      }
+
+      window.ehgcSurveyConsoleLog = (text, tone = "dim") => {
+        appendSurveyConsoleLine(text, tone);
+      };
+
+      window.ehgcSurveyConsoleSetState = (text) => {
+        surveyConsoleState.textContent = text;
+      };
+
+      window.ehgcSurveyConsoleSetPrompt = (text) => {
+        surveyConsolePrompt.textContent = text;
+      };
+
+      function readPendingSurveyContext() {
+        try {
+          const raw = window.localStorage.getItem("ehgc_pending_survey_context");
+          return raw ? JSON.parse(raw) : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function formatSurveyContextRoute(context) {
+        if (!context) return "No route loaded";
+
+        const parts = [];
+        if (context.worldHex) parts.push(`world ${context.worldHex}`);
+        if (context.terrainCell) parts.push(`terrain ${context.terrainCell}`);
+        if (context.band) parts.push(`band ${context.band}`);
+        if (context.terrain?.terrainLabel) parts.push(context.terrain.terrainLabel);
+        return parts.length ? parts.join(" · ") : "Survey route loaded";
+      }
+
+      function syncSurveyContextPanel() {
+        if (!pendingSurveyContext) {
+          surveyContextOrigin.textContent = "Manual entry";
+          surveyContextRoute.textContent = "No route loaded";
+          surveyContextTerrain.textContent = "None";
+          surveyContextMarker.textContent = "Landing Site";
+          return;
+        }
+
+        surveyContextOrigin.textContent = "Handoff from Single Hex";
+        surveyContextRoute.textContent = formatSurveyContextRoute(pendingSurveyContext);
+        surveyContextTerrain.textContent = pendingSurveyContext.terrain?.terrainLabel || "None";
+        surveyContextMarker.textContent = pendingSurveyContext.marker || "Landing Site";
+      }
+
+      function mergeSurveyContextIntoParams() {
+        if (!pendingSurveyContext) return;
+
+        const existing = safeReadParams();
+        const next = {
+          ...existing,
+          surveyContext: {
+            ...pendingSurveyContext,
+          },
+          uiProfile: existing.uiProfile || "immersive-galaxy-survey-v1",
+        };
+
+        paramsEl.value = JSON.stringify(next, null, 2);
+      }
+
+      function safeReadParams() {
+        try {
+          const parsed = JSON.parse(paramsEl.value || "{}");
+          return typeof parsed === "object" && parsed ? parsed : {};
+        } catch {
+          return {};
+        }
+      }
+
+      function syncHud() {
+        hudSeed.textContent = seedEl.value || "-";
+        hudTier.textContent = tierEl.value || "-";
+        hudName.textContent = (nameEl.value || "Unnamed").slice(0, 14);
+      }
+
+      function renderKnob(key) {
+        const k = knobs[key];
+        k.btn.textContent = String(k.value);
+        k.out.textContent = `${k.value}%`;
+      }
+
+      function setKnobValue(key, next) {
+        const k = knobs[key];
+        k.value = Math.max(0, Math.min(100, next));
+        renderKnob(key);
+        writeParamsFromControls();
+      }
+
+      function generateRandomSeed() {
+        if (window.crypto?.getRandomValues) {
+          const buffer = new Uint32Array(1);
+          window.crypto.getRandomValues(buffer);
+          return (buffer[0] % 900000) + 100000;
+        }
+
+        return Math.floor(Math.random() * 900000) + 100000;
+      }
+
+      function writeParamsFromControls() {
+        const existing = safeReadParams();
+        const next = {
+          ...existing,
+          controls: {
+            densityBias: knobs.densityBias.value,
+            anomalyRate: knobs.anomalyRate.value,
+            metallicityBias: knobs.metallicityBias.value,
+            coreIntensity: Number(sliders.coreIntensity.value),
+            riftSpread: Number(sliders.riftSpread.value),
+            nebulaMix: Number(sliders.nebulaMix.value),
+            enableRifts: switches.enableRifts.checked,
+            enableCoreBoost: switches.enableCoreBoost.checked,
+            nebulaInfluence: switches.nebulaInfluence.checked,
+          },
+          nav: {
+            expanse: nav.expanse.value,
+            reach: nav.reach.value,
+            sector: nav.sector.value,
+            hex: nav.hex.value,
+          },
+          galaxyProperties: {
+            morphology: galaxyProperties.morphology.value,
+            ageByr: Number(galaxyProperties.ageByr.value),
+            metallicity: galaxyProperties.metallicity.value,
+            coreDensity: galaxyProperties.coreDensity.value,
+          },
+          uiProfile: "immersive-galaxy-survey-v1",
+        };
+
+        paramsEl.value = JSON.stringify(next, null, 2);
+      }
+
+      function applyParamsToControls() {
+        const params = safeReadParams();
+        const ctrl = params.controls || {};
+        const loc = params.nav || {};
+        const props = params.galaxyProperties || {};
+
+        setKnobValue("densityBias", Number(ctrl.densityBias ?? 0));
+        setKnobValue("anomalyRate", Number(ctrl.anomalyRate ?? 0));
+        setKnobValue("metallicityBias", Number(ctrl.metallicityBias ?? 0));
+
+        sliders.coreIntensity.value = String(Number(ctrl.coreIntensity ?? 45));
+        sliders.riftSpread.value = String(Number(ctrl.riftSpread ?? 35));
+        sliders.nebulaMix.value = String(Number(ctrl.nebulaMix ?? 20));
+
+        switches.enableRifts.checked = Boolean(ctrl.enableRifts ?? true);
+        switches.enableCoreBoost.checked = Boolean(ctrl.enableCoreBoost ?? true);
+        switches.nebulaInfluence.checked = Boolean(ctrl.nebulaInfluence ?? false);
+
+        nav.expanse.value = loc.expanse || nav.expanse.value;
+        nav.reach.value = loc.reach || nav.reach.value;
+        nav.sector.value = loc.sector || nav.sector.value;
+        nav.hex.value = loc.hex || nav.hex.value;
+
+        galaxyProperties.morphology.value = props.morphology || galaxyProperties.morphology.value;
+        galaxyProperties.ageByr.value = String(Number(props.ageByr ?? galaxyProperties.ageByr.value));
+        galaxyProperties.metallicity.value = props.metallicity || galaxyProperties.metallicity.value;
+        galaxyProperties.coreDensity.value = props.coreDensity || galaxyProperties.coreDensity.value;
+
+        sliderLabels.coreIntensity.textContent = sliders.coreIntensity.value;
+        sliderLabels.riftSpread.textContent = sliders.riftSpread.value;
+        sliderLabels.nebulaMix.textContent = sliders.nebulaMix.value;
+      }
+
+      function bindKnob(key) {
+        const k = knobs[key];
+        k.btn.addEventListener("click", () => setKnobValue(key, k.value + 5));
+        k.btn.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+          setKnobValue(key, k.value - 5);
+        });
+      }
+
+      Object.keys(knobs).forEach((key) => bindKnob(key));
+
+      Object.keys(sliders).forEach((key) => {
+        sliders[key].addEventListener("input", () => {
+          sliderLabels[key].textContent = sliders[key].value;
+          writeParamsFromControls();
+        });
+      });
+
+      Object.keys(switches).forEach((key) => {
+        switches[key].addEventListener("change", writeParamsFromControls);
+      });
+
+      Object.keys(nav).forEach((key) => {
+        nav[key].addEventListener("change", writeParamsFromControls);
+      });
+
+      Object.keys(galaxyProperties).forEach((key) => {
+        galaxyProperties[key].addEventListener("input", writeParamsFromControls);
+        galaxyProperties[key].addEventListener("change", writeParamsFromControls);
+      });
+
+      paramsEl.addEventListener("blur", applyParamsToControls);
+      nameEl.addEventListener("input", syncHud);
+      seedEl.addEventListener("input", syncHud);
+      tierEl.addEventListener("change", syncHud);
+      randomSeedBtn.addEventListener("click", () => {
+        const nextSeed = generateRandomSeed();
+        seedEl.value = String(nextSeed);
+        syncHud();
+        setConsoleState("Ready");
+        setConsolePrompt("READY>");
+        appendSurveyConsoleLine(`[SURVEY] random seed generated: ${nextSeed}.`, "good");
+        document.getElementById("console").textContent = `Random seed selected: ${nextSeed}`;
+      });
+
+      document.getElementById("btnGenerate").addEventListener("click", () => {
+        hudMode.textContent = "Preview";
+        appendSurveyConsoleLine(`[SURVEY] preview requested for seed ${seedEl.value || "-"}.`, "dim");
+      });
+      document.getElementById("btnSave").addEventListener("click", () => {
+        hudMode.textContent = "Persist";
+        appendSurveyConsoleLine(`[SURVEY] save requested for ${nameEl.value || "Unnamed Galaxy"}.`, "dim");
+      });
+      document.getElementById("btnUpdate").addEventListener("click", () => {
+        hudMode.textContent = "Update";
+        appendSurveyConsoleLine(`[SURVEY] update requested for ${nameEl.value || "Unnamed Galaxy"}.`, "dim");
+      });
+      document.getElementById("btnDelete").addEventListener("click", () => {
+        hudMode.textContent = "Delete";
+        appendSurveyConsoleLine(`[SURVEY] delete requested for ${nameEl.value || "Unnamed Galaxy"}.`, "warn");
+      });
+
+      window.addEventListener("galaxy:loaded", () => {
+        mergeSurveyContextIntoParams();
+        applyParamsToControls();
+        syncHud();
+        syncSurveyContextPanel();
+      });
+
+      pendingSurveyContext = readPendingSurveyContext();
+      bootSurveyConsole();
+      loadSavedSurveyFilter();
+      applySurveyConsoleFilter();
+      surveySeverityFilter.addEventListener("change", () => {
+        saveSurveyFilter();
+        applySurveyConsoleFilter();
+      });
+      surveyConsoleClear.addEventListener("click", clearSurveyConsole);
+      syncSurveyContextPanel();
+      mergeSurveyContextIntoParams();
+      startUtcClock(document.getElementById("utcClock"));
+      applyParamsToControls();
+      syncHud();
+      writeParamsFromControls();
+    </script>
 
     <script type="module" src="js/galaxySurvey.js"></script>
   </body>

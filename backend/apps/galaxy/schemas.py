@@ -1,6 +1,6 @@
 # /backend/apps/galaxy/schemas.py
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field
+from typing import Optional, Any
 from datetime import datetime
 
 class GalaxyBase(BaseModel):
@@ -9,6 +9,7 @@ class GalaxyBase(BaseModel):
     description: Optional[str] = None
     seed: int
     grid_tier: str  # e.g., "Sector", "Subsector", "System"
+    params: dict[str, Any] = Field(default_factory=dict)
 
 
 class GalaxyCreate(GalaxyBase):
@@ -21,6 +22,7 @@ class GalaxyUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     grid_tier: Optional[str] = None
+    params: Optional[dict[str, Any]] = None
 
 
 class GalaxyResponse(GalaxyBase):

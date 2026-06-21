@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHGC — Single Hex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .single-shell {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(320px, 340px) minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      @media (max-width: 980px) {
+        .single-shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .single-panel {
+        border: 1px solid rgba(215, 184, 106, 0.24);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(9, 14, 23, 0.94), rgba(6, 9, 17, 0.9));
+        padding: 14px;
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.36);
+      }
+
+      .single-h {
+        margin: 0;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .single-copy {
+        margin-top: 6px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .single-field {
+        margin-top: 10px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        background: rgba(8, 12, 20, 0.74);
+        padding: 8px;
+      }
+
+      .single-field label {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .single-field input,
+      .single-field select {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(215, 184, 106, 0.28);
+        padding: 6px 8px;
+        background: #0b1326;
+        color: var(--gold2);
+        font-family: Rajdhani, sans-serif;
+        font-size: 15px;
+      }
+
+      .single-meta {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .single-stat {
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        border-radius: 10px;
+        background: rgba(7, 11, 18, 0.76);
+        padding: 8px;
+      }
+
+      .single-stat .label {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .single-stat .value {
+        margin-top: 3px;
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .single-stage {
+        margin-top: 10px;
+        position: relative;
+        min-height: 620px;
+        border: 1px solid rgba(215, 184, 106, 0.26);
+        border-radius: 14px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 16%),
+          linear-gradient(135deg, #09111f 0%, #13202f 42%, #07111d 100%);
+      }
+
+      .single-hex {
+        position: absolute;
+        inset: 12% 14%;
+        clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        border: 1px solid rgba(255, 239, 190, 0.44);
+        background:
+          radial-gradient(circle at 46% 36%, rgba(255, 255, 255, 0.24), transparent 10%),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(136, 180, 249, 0.2),
+            rgba(14, 22, 34, 0.96) 56%,
+            rgba(7, 11, 18, 1) 100%
+          );
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+          0 0 36px rgba(0, 0, 0, 0.4);
+      }
+
+      .single-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 239, 190, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 239, 190, 0.08) 1px, transparent 1px);
+        background-size: 34px 34px;
+        opacity: 0.25;
+        mix-blend-mode: screen;
+      }
+
+      .single-ring {
+        position: absolute;
+        inset: 16% 18%;
+        border-radius: 50%;
+        border: 1px solid rgba(136, 180, 249, 0.18);
+      }
+
+      .single-ring.r2 {
+        inset: 28% 31%;
+      }
+
+      .single-ring.r3 {
+        inset: 40% 44%;
+      }
+
+      .single-marker {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffe9a8;
+        box-shadow: 0 0 18px rgba(255, 233, 168, 0.72);
+        transform: translate(-50%, -50%);
+      }
+
+      .single-caption {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(215, 184, 106, 0.2);
+        background: rgba(7, 12, 20, 0.84);
+      }
+
+      .single-caption .small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .single-caption .large {
+        font-family: Orbitron, Rajdhani, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .action-row {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .status-line {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-title">EHGC</div>
+            <div class="brand-subtitle">Single Hex</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="singleStatusHeader">SYSTEM ONLINE</span>
+          </div>
+          <div class="clock">
+            <span id="utcClock">--:-- UTC</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="single-shell">
+        <section class="single-panel">
+          <h2 class="single-h">Single Hex Controls</h2>
+          <p class="single-copy">
+            This is the finest navigation rung in the current ladder: a focused 500m region with a return path to
+            terrain and world.
+          </p>
+
+          <div class="single-field">
+            <label for="singleGalaxySelect">Galaxy Record</label>
+            <select id="singleGalaxySelect"></select>
+          </div>
+
+          <div class="single-field">
+            <label for="singleMarker">Hex Marker</label>
+            <input id="singleMarker" type="text" value="Landing Site" />
+          </div>
+
+          <div class="single-field">
+            <label for="singleFeature">Feature Class</label>
+            <select id="singleFeature">
+              <option value="survey">Survey Focus</option>
+              <option value="outpost">Outpost Site</option>
+              <option value="ruins">Ruins Cluster</option>
+              <option value="anomaly">Anomaly Pocket</option>
+            </select>
+          </div>
+
+          <div class="single-meta">
+            <div class="single-stat">
+              <div class="label">Galaxy</div>
+              <div class="value" id="singleHudGalaxy">No galaxy selected</div>
+            </div>
+            <div class="single-stat">
+              <div class="label">Terrain Cell</div>
+              <div class="value" id="singleHudCell">-</div>
+            </div>
+            <div class="single-stat">
+              <div class="label">Feature</div>
+              <div class="value" id="singleHudFeature">Survey Focus</div>
+            </div>
+            <div class="single-stat">
+              <div class="label">Scale</div>
+              <div class="value">500 m</div>
+            </div>
+          </div>
+
+          <div class="single-meta">
+            <div class="single-stat">
+              <div class="label">Terrain Label</div>
+              <div class="value" id="singleHudTerrain">None</div>
+            </div>
+            <div class="single-stat">
+              <div class="label">Climate</div>
+              <div class="value" id="singleHudClimate">-</div>
+            </div>
+            <div class="single-stat">
+              <div class="label">Elevation</div>
+              <div class="value" id="singleHudElevation">-</div>
+            </div>
+            <div class="single-stat">
+              <div class="label">Feature</div>
+              <div class="value" id="singleHudTerrainFeature">-</div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn primary" id="singleOpenSurvey">Open Survey View</button>
+            <button class="btn" id="singleBackToTerrain">Back to Terrain</button>
+          </div>
+
+          <div class="status-line" id="singleStatus">Ready.</div>
+        </section>
+
+        <section class="single-panel">
+          <h2 class="single-h">Single Hex Display</h2>
+          <div class="single-stage">
+            <div class="single-hex">
+              <div class="single-grid"></div>
+              <div class="single-ring r1"></div>
+              <div class="single-ring r2"></div>
+              <div class="single-ring r3"></div>
+              <div class="single-marker" style="left: 52%; top: 47%"></div>
+              <div
+                class="single-marker"
+                style="left: 66%; top: 58%; background: #8fd4ff; box-shadow: 0 0 16px rgba(143, 212, 255, 0.7)"
+              ></div>
+              <div
+                class="single-marker"
+                style="left: 38%; top: 58%; background: #9cf5be; box-shadow: 0 0 16px rgba(156, 245, 190, 0.7)"
+              ></div>
+            </div>
+            <div class="single-caption">
+              <div>
+                <div class="small">500m operational hex</div>
+                <div class="large" id="singleCaption">Awaiting terrain selection</div>
+              </div>
+              <div class="small">Next: survey, detail, or report capture</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-text">Nexus Command Terminal - Single Hex</span>
+      </footer>
+    </div>
+
+    <script type="module" src="js/singleHex.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+Hex Reference:
+Hex: 1 = 1 parsec
+Subsector: 80 hexes
+Sector: 1,280 hexes
+Quadrant: 20,480 hexes
+Region: 327,680 hexes
+Domain: 5,242,880 hexes
+Reach: 83,886,080 hexes
+Expanse: 1,342,177,280 hexes
+
+Single Hex = 500 meters diameter
+Local Hex = 75 Single Hexes
+Terrain Hex = 75 Local Hexes
+World Hex = 75 Terrain Hexes
+World View = Icosahedral Terrain map based on Size of world
+System Orbit = Orbital rings 0 to 20
+Hex = 1 parsec
+Subsector = 80 hexes
+Sector = 16 Subsectors
+Quadrant = 16 Sectors
+Region = 16 Quadrants
+Domain = 16 Regions
+Reach = 16 Domains
+Expanse = 16 Reaches
+Galaxy View = Visual representation of the galaxy (Galactic Units)
